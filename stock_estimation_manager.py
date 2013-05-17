@@ -1,6 +1,7 @@
 from openerp.osv import fields,osv
 from openerp.tools.translate import _
 
+from datetime import datetime, timedelta
 import pdb
 
 class stock_estimation_manager(osv.osv):   
@@ -8,7 +9,7 @@ class stock_estimation_manager(osv.osv):
     
     _columns = {
         'product_id': fields.char('Product ID', size=125),
-        'date': fields.char('Date', size=125),
+        'date': fields.date('Date'),
         'product_qty':fields.float('Quantity'),
         }  
 
@@ -32,6 +33,8 @@ class stock_estimation_manager(osv.osv):
 
     def get_sales(self, cr, uid):        
         
+        CALCULATION_WINDOW_DAYS = 2
+
         # Eliminar todos los objetos actuales
         args = []
         ids = self.search(cr, uid, args)
@@ -42,38 +45,44 @@ class stock_estimation_manager(osv.osv):
         stock_locations_customer = [sl for sl in stock_locations if sl.usage=='customer']
 
         # Obtener todos los movimientos cuyo destino final sea una localizacion de
-        # tipo cliente        
-        stock_moves = self.get_objects(cr, uid, 'stock.move')        
+        # tipo cliente y esten dentro de los días de la ventana de cálculo
+
+        calculation_date = datetime.today() - timedelta(days=CALCULATION_WINDOW_DAYS)
+        str_calculation_date = datetime.strftime(calculation_date, "%Y-%m-%d") + " 00:00:00"
+
+        args = [('create_date', '>=', str_calculation_date)]
+        stock_moves = self.get_objects(cr, uid, 'stock.move', args)        
                 
         stock_moves_customer = [sm for slc in stock_locations_customer for sm in stock_moves 
                                 if sm.location_dest_id==slc]
 
         # Agrupar los movimientos por producto y fecha
-        """
-        pdb.set_trace() 
         res={}
-        default_key = {}
         for smc in stock_moves_customer:
-            product_id = smc.product_id
-            date = smc.date.split(" ")[0]
-            res.setdefault(product_id, default_key)
-
+            product_id = smc.product_id.id
+            date = datetime.strptime(smc.create_date, "%Y-%m-%d %H:%M:%S").date()
+            res.setdefault(product_id, {})
             res[product_id].setdefault(date, 0.0)
             res[product_id][date] += smc.product_qty
-        """   
-        res=[]
+
+        for product in res.keys():
+            for date in res[product].keys():
+                obj = {
+                    'product_id': product,
+                    'date': date,
+                    'product_qty': res[product][date]
+                }
+                self.create(cr, uid, obj, context=None)
+
+        """
         for smc in stock_moves_customer:            
+            date = datetime.strptime(smc.date, "%Y-%m-%d %H:%M:%S").date()
             obj = {
-                    'product_id': smc.product_id.id,
-                    'date': smc.date.split(" ")[0],
+                    'product_id': smc.product_id,
+                    'date': date,
                     'product_qty': smc.product_qty 
                 }
-            res.append(obj)
             self.create(cr, uid, obj, context=None)
-            self._columns['product_id'] = smc.product_id.id
-            self._columns['date'] = smc.date
-            self._columns['product_qty'] = smc.product_qty
-       
-        return res
+        """
 
 stock_estimation_manager()
