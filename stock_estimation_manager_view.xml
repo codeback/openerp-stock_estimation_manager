@@ -7,9 +7,15 @@
             <field name="model">stock.estimation.manager</field>
             <field name="arch" type="xml">
                 <tree string="Stock Forecast Analysis">
-                    <field name="product_id" select="1"/>
-                    <field name="date" select="1"/>                              
-                    <field name="product_qty" select="1"/>
+                    <field name="procurement_need" select="1"/>
+                    <field name="product_name" select="1"/>
+                    <field name="security_stock" select="1"/>
+                    <field name="outgoings_per_day" select="1"/>                              
+                    <field name="stock_min" select="1"/>
+                    <field name="stock_max" select="1"/>
+                    <field name="stock_virtual" select="1"/>
+                    <field name="stock_real" select="1"/>
+                    <field name="suplier_delay" select="1"/>
                </tree>
             </field>
         </record>
@@ -19,8 +25,8 @@
              <field name="model">stock.estimation.manager</field>
              <field name="arch" type="xml">
                  <graph string="Stock Forecast Analysis" type="bar">
-                     <field name="product_id"/>
-                     <field name="product_qty"/>
+                     <field name="product_name"/>
+                     <field name="outgoings_per_day"/>
                  </graph>
              </field>
         </record>
