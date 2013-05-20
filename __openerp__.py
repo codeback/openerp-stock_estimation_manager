@@ -21,7 +21,7 @@
 
 {
     'name': 'Statistical estimation of stockable products',
-    'version': '0.1',
+    'version': '0.2',
     'author': 'Codeback Software',
     'summary': 'Storage, Forecast, Stock rules, Scheduler',
     'description' : """
