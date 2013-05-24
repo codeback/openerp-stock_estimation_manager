@@ -47,18 +47,15 @@ class stock_estimation_order_wizard (osv.osv_memory):
     }
 
     def default_get(self, cr, uid, fields, context=None):
-        pdb.set_trace()
         if context is None: context = {}
         res = super(stock_estimation_order_wizard, self).default_get(cr, uid, fields, context=context)
         stock_est_ids = context.get('active_ids', [])
-        pdb.set_trace()
         
         if not stock_est_ids or len(stock_est_ids) == 0:
             return res
 
         stock_est_objs = self.pool.get('stock.estimation').browse(cr, uid, stock_est_ids, context=context)
 
-        pdb.set_trace()
         order_lines = []
         for stock_est_obj in stock_est_objs:
             order_line = {
@@ -66,11 +63,9 @@ class stock_estimation_order_wizard (osv.osv_memory):
                 'product_name': stock_est_obj.product_name,
                 'quantity': stock_est_obj.required_qty,
             }
-            pdb.set_trace()
             order_lines.append(order_line)
             
         res.update(order_lines_ids=order_lines)
-        pdb.set_trace()
         return res
 
     def generate_order(self, cr, uid, ids, context=None):
@@ -79,19 +74,13 @@ class stock_estimation_order_wizard (osv.osv_memory):
         proc_obj = self.pool.get('procurement.order')
         #stock_est = self.pool.get('stock.estimation')
         order = self.browse(cr, uid, ids[0], context=context)
-        pdb.set_trace()
         # stock_est_objs = stock_est.browse(cr, uid, context['active_ids'], context=context)
 
-        pdb.set_trace()
         for order_line in order.order_lines_ids:
-            pdb.set_trace()
             product = order_line.product_id
-            pdb.set_trace()
 
             if product.orderpoint_ids and product.orderpoint_ids[0]:
                 warehouse = product.orderpoint_ids[0].warehouse_id
-                pdb.set_trace()
-
             
             proc_id = proc_obj.create(cr, uid,
                             self._prepare_procurement(cr, uid, product, warehouse, order_line.quantity, context=context),

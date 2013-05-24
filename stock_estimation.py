@@ -25,8 +25,9 @@ class stock_estimation(osv.osv):
         }  
 
     def run_scheduler(self, cr, uid, context=None):
+        """ Estimate stock from scheduler"""   
         self.estimate_stock(cr, uid)
-        return True   
+        return True     
 
     def estimate_stock(self, cr, uid):        
         
@@ -38,7 +39,7 @@ class stock_estimation(osv.osv):
         CALCULATION_WINDOW_DAYS = config[0].default_window_days
         QOS = config[0].default_qos
         MANUFACTURING_MATERIALS = config[0].default_include_bom
-        SIGMA_FACTOR = config[0].default_sigma_factor
+        SIGMA_FACTOR = config[0].default_sigma_factor       
 
         # Eliminar todos los objetos actuales
         self._clear_objects(cr, uid)
@@ -58,7 +59,11 @@ class stock_estimation(osv.osv):
         outgoings = self._group_by_product_and_date(stock_moves)
         
         for product in outgoings.keys():
-            if product.stock_estimation_mode and product.stock_estimation_mode != 'd':
+            # Se comprueba si es un producto almacenable (tipo='product') y si tiene activado 
+            # el modulo estimacion de stock
+            if product.type == 'product' and \
+                product.stock_estimation_mode and product.stock_estimation_mode != 'd':
+
                 outgoing_qties = self._get_qties_per_day(
                     outgoings[product].values(), CALCULATION_WINDOW_DAYS)
      
@@ -88,7 +93,7 @@ class stock_estimation(osv.osv):
 
                     stock_max = 0
                     required_qty = 0
-                    
+                
                 record = {
                     'stock_status': stock_status,
                     'product_name': product.name,
@@ -175,7 +180,7 @@ class stock_estimation(osv.osv):
 
     def _calculate_mean_and_std(self, outgoing_qties):
         """
-        Halla la media y la desviación típica
+        Halla la media y la desviacion tipica
         """
         mean = sum(outgoing_qties)/len(outgoing_qties)        
         variance = map(lambda x: (x - mean)**2, outgoing_qties)
@@ -236,5 +241,11 @@ class stock_estimation_settings(osv.osv):
         else:
             id = super(stock_estimation_settings,self).create(cr, uid, values, context)
         return id
+
+    def run_stock_estimation(self, cr, uid, ids, context=None):
+        """ Estimate stock from wizard"""    
+        obj = self.pool.get('stock.estimation')
+        obj.estimate_stock(cr, uid)
+        return True
 
 stock_estimation_settings()

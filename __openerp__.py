@@ -35,9 +35,9 @@ TBD
     'demo': [],
     'data': [
         'stock_estimation_view.xml',
-        'res_config_view.xml',
-        'wizard/wizard_order.xml',
+        'res_config_view.xml',        
         'product_view.xml',
+        'wizard/wizard_order.xml',
     ],
     'test': [],
     'installable': True,
