@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>       
+        <record id="view_stock_estimation_tree" model="ir.ui.view">
+            <field name="name">stock.estimation.tree</field>
+            <field name="model">stock.estimation</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Forecast Analysis" colors="orange:stock_status=='cau';red:stock_status=='ale'">         
+                    <field name="stock_status" invisible="1"/>                
+                    <field name="product_name" select="1"/> 
+                    <field name="product_id" invisible="1"/>                
+                    <field name="security_stock" select="1"/> 
+                    <field name="required_qty" select="1"/>
+                    <field name="outgoings_per_day" select="1"/>
+                    <field name="expected_per_day" select="1"/>    
+                    <field name="stock_min" select="1"/>             
+                    <field name="stock_max" select="1"/>                
+                    <field name="stock_virtual" select="1"/>               
+                    <field name="stock_real" select="1"/>                      
+                    <field name="supplier_delay" select="1"/>                        
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_stock_estimation_graph" model="ir.ui.view">
+             <field name="name">stock.estimation.graph</field>
+             <field name="model">stock.estimation</field>
+             <field name="arch" type="xml">
+                 <graph string="Stock Estimation" type="bar">
+                     <field name="product_name"/>
+                     <field name="expected_per_day"/>
+                 </graph>
+             </field>
+        </record>
+
+        <record id="action_stock_estimation" model="ir.actions.act_window">
+            <field name="name">Stock Estimation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.estimation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph</field>            
+            <field name="help">Stock Estimation</field>
+        </record>
+
+        <record forcecreate="True" model="ir.cron" id="ir_cron_recalculate_stock_rules">
+            <field name='name'>Recalculate min/max stock estimation</field>
+            <field name='interval_number'>1</field>
+            <field name='interval_type'>minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+            <field name="doall" eval="False" />
+            <field name="model">stock.estimation</field>
+            <field name="function">run_scheduler</field>
+            <field name="args">()</field>
+        </record>
+
+        <menuitem name="Stock Estimation" id="menu_stock_estimation_manager" parent="base.menu_reporting"/>
+        <menuitem name="Stock manager" id="menu_action_stock_estimation" parent="menu_stock_estimation_manager" action="action_stock_estimation" sequence="10"/>
+
+    </data>
+</openerp>

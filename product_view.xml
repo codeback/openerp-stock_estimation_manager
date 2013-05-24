@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+        <record id="view_product_form_stock_estimation" model="ir.ui.view">
+            <field name="name">product.form.stock.estimation</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <group name="procurement" position="inside">
+                    <group string="Stock Estimation">
+                        <field name="stock_estimation_mode" />       
+                    </group>
+                </group>                
+            </field>
+        </record>       
+
+    </data>
+</openerp>

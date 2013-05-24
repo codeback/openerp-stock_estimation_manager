@@ -1,4 +1,4 @@
-openerp-stock_estimation_manager
+openerp-stock_estimation
 ================================
 
 Statistical estimation of stockable products

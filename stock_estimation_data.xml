@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data> 
+        <record id="stock.estimation.config.default" model="stock.estimation.config.settings">
+            <field name="default_window_days">30</field>
+            <field name="default_qos">0.7</field>
+            <field name="default_outliers">3</field>
+            <field name="default_include_bom" eval="False"/>
+        </record>
+    </data>
+</openerp>

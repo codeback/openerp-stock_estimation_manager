@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_stock_estimation_config" model="ir.ui.view">
+            <field name="name">stock estimation config</field>
+            <field name="model">stock.estimation.config.settings</field>
+            <field name="arch" type="xml">
+                <form string="Stock estimation configuration" version="7.0" class="oe_form_configuration">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" type="object" name="cancel" class="oe_link"/>
+                    </header>
+                    <separator string="Stock estimation settings"/>
+                    <group>
+                        <label for="id" string="Configuration"/>
+                        <div>
+                            <div>
+                                <label for="default_window_days"/>
+                                <field name="default_window_days" class="oe_inline"/>                      
+                            </div>
+                            <div>
+                                <label for="default_qos"/>
+                                <field name="default_qos" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="default_include_bom"/>
+                                <field name="default_include_bom" class="oe_inline"/>
+                            </div>
+                            <div>
+                                <label for="default_sigma_factor"/>
+                                <field name="default_sigma_factor" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </group>                             
+               </form>
+            </field>
+        </record>
+
+        <record id="action_stock_estimation_config" model="ir.actions.act_window">
+            <field name="name">Stock estimation configuration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.estimation.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem name="Configuration" id="menu_action_stock_estimation_config" parent="menu_stock_estimation_manager" action="action_stock_estimation_config" sequence="20"/>
+    </data>
+</openerp>
