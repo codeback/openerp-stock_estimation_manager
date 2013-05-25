@@ -82,16 +82,16 @@ class stock_estimation_order_wizard (osv.osv_memory):
             if product.orderpoint_ids and product.orderpoint_ids[0]:
                 warehouse = product.orderpoint_ids[0].warehouse_id
             
-            proc_id = proc_obj.create(cr, uid,
-                            self._prepare_procurement(cr, uid, product, warehouse, order_line.quantity, context=context),
-                            context=context)
-            
-            wf_service.trg_validate(uid, 'procurement.order', proc_id, 'button_confirm', cr)
-            wf_service.trg_validate(uid, 'procurement.order', proc_id, 'button_check', cr)
-            '''
-            proc_obj.signal_workflow(cr, uid, [proc_id], 'button_confirm', context=context)
-            proc_obj.signal_workflow(cr, uid, [proc_id], 'button_check', context=context)
-            '''
+                proc_id = proc_obj.create(cr, uid,
+                                self._prepare_procurement(cr, uid, product, warehouse, order_line.quantity, context=context),
+                                context=context)
+                
+                wf_service.trg_validate(uid, 'procurement.order', proc_id, 'button_confirm', cr)
+                wf_service.trg_validate(uid, 'procurement.order', proc_id, 'button_check', cr)
+                '''
+                proc_obj.signal_workflow(cr, uid, [proc_id], 'button_confirm', context=context)
+                proc_obj.signal_workflow(cr, uid, [proc_id], 'button_check', context=context)
+                '''
 
     def _prepare_procurement(self, cr, uid, product, warehouse, product_qty, context=None):
         return {'name': _('Stock Estimation Automatic OP: %s') % (product.name,),

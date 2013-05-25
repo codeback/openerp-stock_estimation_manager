@@ -45,7 +45,7 @@
         <record forcecreate="True" model="ir.cron" id="ir_cron_recalculate_stock_rules">
             <field name='name'>Recalculate min/max stock estimation</field>
             <field name='interval_number'>1</field>
-            <field name='interval_type'>minutes</field>
+            <field name='interval_type'>days</field>
             <field name="numbercall">-1</field>
             <field name="active">True</field>
             <field name="doall" eval="False" />
@@ -59,7 +59,11 @@
             <field name="model">stock.estimation.settings</field>
             <field name="arch" type="xml">
                 <form string="Run stock estimation manually" version="7.0">    
-                    <field name="include_bom"/>          
+                    <label string="
+If you press 'Run' button, Stock Estimation Manager will estimate the stock of each product that
+have selected the 'automatic' or 'manual' option in 'Operation mode' product field.&#10; &#10;
+* Automatic option will update the minimum and maximum stock of the first order point. In this
+way, procurement orders will generate automatically by MRP Scheduler"/>                            
                     <footer>
                         <button special="cancel" string="_Cancel" icon='gtk-cancel'/>
                         or
@@ -69,7 +73,7 @@
             </field>
         </record>
 
-        <act_window name="Run stock estimation"
+        <act_window name="Run stock estimation manually"
             key2="client_action_multi"
             res_model="stock.estimation.settings"
             view_mode="form"

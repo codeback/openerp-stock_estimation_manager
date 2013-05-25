@@ -246,6 +246,29 @@ class stock_estimation_settings(osv.osv):
         """ Estimate stock from wizard"""    
         obj = self.pool.get('stock.estimation')
         obj.estimate_stock(cr, uid)
-        return True
+        
+        menu_mod = self.pool.get('ir.ui.menu')        
+        args = [('name', '=', 'Stock manager')]
+        menu_ids = menu_mod.search(cr, uid, args)
+        
+        return {
+            'name': 'Stock Estimation',
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+            'params': {'menu_id': menu_ids[0]},
+        }
+
+        """
+        return {
+            'name': 'Stock Estimation',
+            'view_type': 'form',
+            'view_mode': 'tree, graph',
+            'view_id': False,
+            'res_model': 'stock.estimation',
+            'res_id': 'action_stock_estimation',
+            'context': "{}",
+            'type': 'ir.actions.act_window',
+        } 
+        """      
 
 stock_estimation_settings()
