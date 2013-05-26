@@ -31,15 +31,26 @@ class stock_estimation(osv.osv):
 
     def estimate_stock(self, cr, uid):        
         
-        obj = self.pool.get('stock.estimation.config.settings')        
-        ids = obj.search(cr, uid, [])
-        config = obj.browse(cr, uid, ids)
+        model_conf = self.pool.get('stock.estimation.config.settings')        
+        ids = model_conf.search(cr, uid, [])
+        config = model_conf.browse(cr, uid, ids)
         
+        if config and config[0]:
+            pdb.set_trace()
+            config_data = config[0]
+        else:
+            pdb.set_trace()
+            obj_id = model_conf.create(cr, uid, {})
+            config = model_conf.browse(cr, uid, [obj_id])
+            config_data = config[0]
+
+        pdb.set_trace()
+
         # Leer datos de configutacion
-        CALCULATION_WINDOW_DAYS = config[0].default_window_days
-        QOS = config[0].default_qos
-        MANUFACTURING_MATERIALS = config[0].default_include_bom
-        SIGMA_FACTOR = config[0].default_sigma_factor       
+        CALCULATION_WINDOW_DAYS = config_data.default_window_days
+        QOS = config_data.default_qos
+        MANUFACTURING_MATERIALS = config_data.default_include_bom
+        SIGMA_FACTOR = config_data.default_sigma_factor       
 
         # Eliminar todos los objetos actuales
         self._clear_objects(cr, uid)
@@ -248,7 +259,7 @@ class stock_estimation_settings(osv.osv):
         obj.estimate_stock(cr, uid)
         
         menu_mod = self.pool.get('ir.ui.menu')        
-        args = [('name', '=', 'Stock manager')]
+        args = [('name', '=', 'Stock estimation manager')]
         menu_ids = menu_mod.search(cr, uid, args)
         
         return {
@@ -256,19 +267,6 @@ class stock_estimation_settings(osv.osv):
             'type': 'ir.actions.client',
             'tag': 'reload',
             'params': {'menu_id': menu_ids[0]},
-        }
-
-        """
-        return {
-            'name': 'Stock Estimation',
-            'view_type': 'form',
-            'view_mode': 'tree, graph',
-            'view_id': False,
-            'res_model': 'stock.estimation',
-            'res_id': 'action_stock_estimation',
-            'context': "{}",
-            'type': 'ir.actions.act_window',
-        } 
-        """      
+        }      
 
 stock_estimation_settings()

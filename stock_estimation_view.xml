@@ -80,8 +80,8 @@ way, procurement orders will generate automatically by MRP Scheduler"/>
             target="new"
             id="action_stock_estimation_run"/>
 
-        <menuitem name="Stock Estimation" id="menu_stock_estimation_manager" parent="base.menu_reporting"/>
-        <menuitem name="Stock manager" id="menu_action_stock_estimation" parent="menu_stock_estimation_manager" action="action_stock_estimation" sequence="10"/>
+        <menuitem name="Stock Estimation" id="menu_stock_estimation_manager" parent="stock.menu_stock_root" sequence="12"/>
+        <menuitem name="Stock estimation manager" id="menu_action_stock_estimation" parent="menu_stock_estimation_manager" action="action_stock_estimation" sequence="10"/>
         <menuitem name="Run manually" id="menu_action_stock_estimation_run" parent="menu_stock_estimation_manager" action="action_stock_estimation_run" sequence="15"/>
 
     </data>
