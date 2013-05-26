@@ -35,6 +35,8 @@ class stock_estimation(osv.osv):
         ids = model_conf.search(cr, uid, [])
         config = model_conf.browse(cr, uid, ids)
         
+        pdb.set_trace()
+
         if config and config[0]:
             pdb.set_trace()
             config_data = config[0]
@@ -43,9 +45,8 @@ class stock_estimation(osv.osv):
             obj_id = model_conf.create(cr, uid, {})
             config = model_conf.browse(cr, uid, [obj_id])
             config_data = config[0]
-
+        
         pdb.set_trace()
-
         # Leer datos de configutacion
         CALCULATION_WINDOW_DAYS = config_data.default_window_days
         QOS = config_data.default_qos
@@ -238,10 +239,10 @@ class stock_estimation_settings(osv.osv):
     _name = "stock.estimation.settings"
     
     _columns = {
-        'window_days': fields.integer('Window days', required=True),
-        'qos': fields.float('Quality of Service', required=True),
+        'window_days': fields.integer('Window days'),
+        'qos': fields.float('Quality of Service'),
         'include_bom': fields.boolean('Include BoM'),
-        'sigma_factor': fields.float('Sigma Factor', required=True),    
+        'sigma_factor': fields.float('Sigma Factor'),    
     } 
 
     def create(self, cr, uid, values, context=None):
@@ -255,6 +256,7 @@ class stock_estimation_settings(osv.osv):
 
     def run_stock_estimation(self, cr, uid, ids, context=None):
         """ Estimate stock from wizard"""    
+
         obj = self.pool.get('stock.estimation')
         obj.estimate_stock(cr, uid)
         

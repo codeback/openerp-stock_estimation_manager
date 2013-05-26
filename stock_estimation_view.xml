@@ -58,7 +58,7 @@
             <field name="name">Run stock estimation</field>
             <field name="model">stock.estimation.settings</field>
             <field name="arch" type="xml">
-                <form string="Run stock estimation manually" version="7.0">    
+                <form string="Run stock estimation manually" version="7.0">
                     <label string="
 If you press 'Run' button, Stock Estimation Manager will estimate the stock of each product that
 have selected the 'automatic' or 'manual' option in 'Operation mode' product field.&#10; &#10;

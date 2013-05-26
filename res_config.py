@@ -11,14 +11,12 @@ class stock_estimation_config_settings(osv.osv_memory):
         'default_sigma_factor': fields.float('Sigma Factor', default_model='stock.estimation.settings', required=True),
     } 
 
-    """
     _defaults = {
         'default_window_days': 30,
         'default_qos' : 0.7,
         'default_include_bom' : True,
-        'default_sigma_factor' : 3,
+        'default_sigma_factor' : 2,
     }  
-    """
 
     def create(self, cr, uid, values, context=None):
         ids = self.search(cr, uid, [])
