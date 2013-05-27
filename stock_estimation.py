@@ -53,6 +53,7 @@ class stock_estimation(osv.osv):
 
     def estimate_stock(self, cr, uid):        
         
+        # Leer datos de configutacion
         model_conf = self.pool.get('stock.estimation.config.settings')        
         ids = model_conf.search(cr, uid, [])
         config = model_conf.browse(cr, uid, ids)
@@ -63,8 +64,7 @@ class stock_estimation(osv.osv):
             obj_id = model_conf.create(cr, uid, {})
             config = model_conf.browse(cr, uid, [obj_id])
             config_data = config[0]
-        
-        # Leer datos de configutacion
+                
         CALCULATION_WINDOW_DAYS = config_data.default_window_days
         QOS = config_data.default_qos
         MANUFACTURING_MATERIALS = config_data.default_include_bom
@@ -180,7 +180,7 @@ class stock_estimation(osv.osv):
         args = [('create_date', '>=', str_calculation_date)]
         stock_moves = self._get_objects(cr, uid, 'stock.move', args)        
 
-        return [sm for sl in stock_locations for sm in stock_moves if sm.location_dest_id==sl]
+        return [sm for sl in stock_locations for sm in stock_moves if sm.location_dest_id==sl and sm.state != 'cancel']
 
     def _group_by_product_and_date(self, stock_moves):
         """
