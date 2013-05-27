@@ -122,10 +122,12 @@ class stock_estimation(osv.osv):
 
                     stock_max = 0
                     required_qty = 0
-                
+
+
+
                 record = {
                     'stock_status': stock_status,
-                    'product_name': product.name,
+                    'product_name': product.code,
                     'product_id': product.id,
                     'security_stock': security_stock,
                     'required_qty': required_qty,
