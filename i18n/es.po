@@ -1,0 +1,297 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* stock_estimation
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130325-002404\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-27 07:42+0000\n"
+"PO-Revision-Date: 2013-05-27 07:42+0000\n"
+"Last-Translator: Codeback Software <info@codeback.es>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_estimation
+#: model:ir.ui.menu,name:stock_estimation.menu_action_stock_estimation_run
+msgid "Run manually"
+msgstr "Ejecutar manualmente"
+
+#. module: stock_estimation
+#: field:stock.estimation,outgoings_per_day:0
+msgid "Outgoings per day"
+msgstr "Salidas por día"
+
+#. module: stock_estimation
+#: field:stock.estimation.config.settings,default_qos:0
+#: field:stock.estimation.settings,qos:0
+msgid "Quality of Service"
+msgstr "Calidad de servicio"
+
+#. module: stock_estimation
+#: view:stock.estimation.config.settings:0
+msgid "Stock estimation settings"
+msgstr "Configuración para la estimación de stock"
+
+#. module: stock_estimation
+#: field:stock.estimation,security_stock:0
+msgid "Security Stock"
+msgstr "Stock de seguridad"
+
+#. module: stock_estimation
+#: model:ir.actions.act_window,help:stock_estimation.action_stock_estimation
+#: model:ir.actions.act_window,name:stock_estimation.action_stock_estimation
+#: model:ir.ui.menu,name:stock_estimation.menu_action_stock_estimation_config
+#: model:ir.ui.menu,name:stock_estimation.menu_stock_estimation_manager
+#: view:product.product:0
+#: view:stock.estimation:0
+msgid "Stock Estimation"
+msgstr "Estimación de Stock"
+
+#. module: stock_estimation
+#: code:addons/stock_estimation/wizard/wizard_order.py:97
+#, python-format
+msgid "Stock Estimation Automatic OP: %s"
+msgstr "OP automática de estimación de Stock: %s"
+
+#. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_stock_estimation_settings
+msgid "stock.estimation.settings"
+msgstr "stock.estimation.settings"
+
+#. module: stock_estimation
+#: field:stock.estimation.config.settings,default_include_bom:0
+#: field:stock.estimation.settings,include_bom:0
+msgid "Include BoM"
+msgstr "Incluir BoM"
+
+#. module: stock_estimation
+#: selection:stock.estimation,stock_status:0
+msgid "Available"
+msgstr "Disponible"
+
+#. module: stock_estimation
+#: view:stock.estimation.order.wizard:0
+msgid "Selected orders"
+msgstr "Pedidos seleccionados"
+
+#. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_product_product
+#: field:stock.estimation,product_id:0
+#: field:stock.estimation,product_name:0
+#: field:stock.estimation.order.line,product_id:0
+#: field:stock.estimation.order.line,product_name:0
+msgid "Product"
+msgstr "Producto"
+
+#. module: stock_estimation
+#: view:stock.estimation.settings:0
+msgid "Run"
+msgstr "Ejecutar"
+
+#. module: stock_estimation
+#: field:stock.estimation.config.settings,default_window_days:0
+#: field:stock.estimation.settings,window_days:0
+msgid "Window days"
+msgstr "Ventana de días"
+
+#. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_stock_estimation_order_line
+msgid "stock.estimation.order.line"
+msgstr "stock.estimation.order.line"
+
+#. module: stock_estimation
+#: selection:product.product,stock_estimation_mode:0
+msgid "Auto"
+msgstr "Auto"
+
+#. module: stock_estimation
+#: view:stock.estimation.order.wizard:0
+#: view:stock.estimation.settings:0
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#. module: stock_estimation
+#: selection:stock.estimation,stock_status:0
+msgid "Alert"
+msgstr "Alerta"
+
+#. module: stock_estimation
+#: field:stock.estimation,supplier_delay:0
+msgid "Supplier lead time"
+msgstr "Tiempo de entrega del proveedor"
+
+#. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_stock_estimation_config_settings
+msgid "stock.estimation.config.settings"
+msgstr "stock.estimation.config.settings"
+
+#. module: stock_estimation
+#: view:stock.estimation.config.settings:0
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: stock_estimation
+#: view:stock.estimation.order.wizard:0
+msgid "Generate"
+msgstr "Generar"
+
+#. module: stock_estimation
+#: field:stock.estimation,stock_virtual:0
+msgid "Virtual stock"
+msgstr "Stock virtual"
+
+#. module: stock_estimation
+#: field:stock.estimation,stock_max:0
+msgid "Max. stock"
+msgstr "Stock max."
+
+#. module: stock_estimation
+#: field:stock.estimation.order.line,wizard_id:0
+msgid "Wizard"
+msgstr "Wizard"
+
+#. module: stock_estimation
+#: field:stock.estimation,required_qty:0
+msgid "Required order quantity"
+msgstr "Cantidad requerida para el pedido"
+
+#. module: stock_estimation
+#: model:ir.ui.menu,name:stock_estimation.menu_action_stock_estimation
+msgid "Stock estimation manager"
+msgstr "Gestión de stock"
+
+#. module: stock_estimation
+#: view:stock.estimation:0
+msgid "Stock Forecast Analysis"
+msgstr "Previsión de stock"
+
+#. module: stock_estimation
+#: selection:product.product,stock_estimation_mode:0
+msgid "Manual"
+msgstr "Manual"
+
+#. module: stock_estimation
+#: field:stock.estimation,expected_per_day:0
+msgid "Expected per day"
+msgstr "Esperado por día"
+
+#. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_stock_estimation_order_wizard
+msgid "stock.estimation.order.wizard"
+msgstr "stock.estimation.order.wizard"
+
+#. module: stock_estimation
+#: field:product.product,stock_estimation_mode:0
+msgid "Operation mode"
+msgstr "Modo de operación"
+
+#. module: stock_estimation
+#: model:ir.actions.act_window,name:stock_estimation.action_generate_order
+msgid "Generate orders"
+msgstr "Generar pedido(s)"
+
+#. module: stock_estimation
+#: view:stock.estimation.order.wizard:0
+msgid "Products"
+msgstr "Productos"
+
+#. module: stock_estimation
+#: model:ir.actions.act_window,name:stock_estimation.action_stock_estimation_run
+#: view:stock.estimation.settings:0
+msgid "Run stock estimation manually"
+msgstr "Ejecutar manualmente estimación de Stock"
+
+#. module: stock_estimation
+#: model:ir.actions.act_window,name:stock_estimation.action_stock_estimation_config
+#: view:stock.estimation.config.settings:0
+msgid "Stock estimation configuration"
+msgstr "Configuración de la estimación de stock"
+
+#. module: stock_estimation
+#: view:stock.estimation.order.line:0
+#: field:stock.estimation.order.wizard,order_lines_ids:0
+msgid "Order lines"
+msgstr "Líneas de pedido"
+
+#. module: stock_estimation
+#: field:stock.estimation.order.line,quantity:0
+msgid "Quantity"
+msgstr "Cantidad"
+
+#. module: stock_estimation
+#: field:stock.estimation,stock_status:0
+msgid "Stock status"
+msgstr "Estado del Stock"
+
+#. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_stock_estimation
+msgid "stock.estimation"
+msgstr "stock.estimation"
+
+#. module: stock_estimation
+#: field:stock.estimation.config.settings,default_sigma_factor:0
+#: field:stock.estimation.settings,sigma_factor:0
+msgid "Sigma Factor"
+msgstr "Factor Sigma"
+
+#. module: stock_estimation
+#: field:stock.estimation,stock_real:0
+msgid "Real stock"
+msgstr "Stock real"
+
+#. module: stock_estimation
+#: view:stock.estimation.settings:0
+msgid " If you press 'Run' button, the Stock Estimation module will estimate the stock of each product which has the 'automatic' or 'manual' option in 'Operation mode' product field selected.\n"
+" \n"
+" * The Automatic option will update the minimum and maximum stock of the first order point, and procurement orders will be automatically generated by the MRP Scheduler"
+msgstr " Si pulsas el botón 'ejecutar', el módulo estimará el stock de aquellos productos que tengan activado el mismo (en modo automático o manual) en el apartado 'Modo de operación' de su ficha.\n"
+" \n"
+" * La opción automática actualiza automáticamente los valores de stock mínimo y máximo del primer punto de pedido. Los pedidos serán generados de forma automática por el planificador MRP."
+
+#. module: stock_estimation
+#: code:addons/stock_estimation/wizard/wizard_order.py:98
+#, python-format
+msgid "Stock Estimation Module"
+msgstr "Módulo de Estimación de Stock"
+
+#. module: stock_estimation
+#: selection:product.product,stock_estimation_mode:0
+msgid "Disabled"
+msgstr "Deshabilitado"
+
+#. module: stock_estimation
+#: selection:stock.estimation,stock_status:0
+msgid "Caution"
+msgstr "Precaución"
+
+#. module: stock_estimation
+#: field:stock.estimation,stock_min:0
+msgid "Min. stock"
+msgstr "Stock min."
+
+#. module: stock_estimation
+#: view:stock.estimation.config.settings:0
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: stock_estimation
+#: view:stock.estimation.config.settings:0
+msgid "Apply"
+msgstr "Aplicar"
+
+#. module: stock_estimation
+#: view:stock.estimation.order.wizard:0
+msgid "Products to order"
+msgstr "Productos a pedir"
+
+#. module: stock_estimation
+#: view:stock.estimation.config.settings:0
+#: view:stock.estimation.order.wizard:0
+#: view:stock.estimation.settings:0
+msgid "or"
+msgstr "o"
+

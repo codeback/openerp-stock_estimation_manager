@@ -1,8 +1,8 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2011 Pexego Sistemas Informáticos (<http://www.pexego.es>). All Rights Reserved
+#    OpenERP, Open Source Management Solution   
+#    Copyright (C) 2013 Codeback Software S.L. (www.codeback.es). All Rights Reserved
 #    $Id$
 #
 #    This program is free software: you can redistribute it and/or modify

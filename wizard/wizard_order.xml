@@ -19,18 +19,7 @@
                         or
                         <button name="generate_order" string="Generate" type="object" icon="terp-gtk-go-back-rtl"/>
                     </footer>
-                </form>
-              <!--
-              <form string="Generate orders">
-                    <separator colspan="4" string="Generate order" />
-                    <field name="journal_id"/>
-                    <newline/>
-                    <field name="product_id"/>
-                    <newline/>
-                    <button special="cancel" string="_Cancel" icon='gtk-cancel'/>
-                    <button name="generate_order" string="Generate" type="object" icon="terp-gtk-go-back-rtl"/>
-             </form>
-            -->
+                </form>              
             </field>
         </record>
 
