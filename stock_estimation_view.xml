@@ -78,9 +78,9 @@ If you press 'Run' button, the Stock Estimation module will estimate the stock o
             target="new"
             id="action_stock_estimation_run"/>
 
-        <menuitem name="Stock Estimation" id="menu_stock_estimation_manager" parent="stock.menu_stock_root" sequence="12"/>
-        <menuitem name="Stock estimation manager" id="menu_action_stock_estimation" parent="menu_stock_estimation_manager" action="action_stock_estimation" sequence="10"/>
-        <menuitem name="Run manually" id="menu_action_stock_estimation_run" parent="menu_stock_estimation_manager" action="action_stock_estimation_run" sequence="15"/>
+        <menuitem name="Stock Estimation" id="menu_stock_estimation_manager" groups="stock.group_stock_manager,stock.group_stock_user" parent="stock.menu_stock_root" sequence="12"/>
+        <menuitem name="Stock estimation manager" id="menu_action_stock_estimation" groups="stock.group_stock_manager,stock.group_stock_user" parent="menu_stock_estimation_manager" action="action_stock_estimation" sequence="10"/>
+        <menuitem name="Run manually" id="menu_action_stock_estimation_run" groups="stock.group_stock_manager,stock.group_stock_user" parent="menu_stock_estimation_manager" action="action_stock_estimation_run" sequence="15"/>
 
     </data>
 </openerp>

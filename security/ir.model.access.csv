@@ -1,0 +1,12 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_stock_estimation_user","stock.estimation.user","model_stock_estimation","stock.group_stock_user",0,0,0,0 
+"access_stock_estimation_manager","stock.estimation.manager","model_stock_estimation","stock.group_stock_manager",1,1,1,1
+"access_stock_estimation_config_settings_user","stock.estimation.config.settings.user","model_stock_estimation_config_settings","stock.group_stock_user",0,0,0,0 
+"access_stock_estimation_config_settings_manager","stock.estimation.config.settings.manager","model_stock_estimation_config_settings","stock.group_stock_manager",1,1,1,1
+"access_stock_estimation_settings_user","stock.estimation.settings.user","model_stock_estimation_settings","stock.group_stock_user",0,0,0,0 
+"access_stock_estimation_settings_manager","stock.estimation.settings.manager","model_stock_estimation_settings","stock.group_stock_manager",1,1,1,1
+"access_stock_estimation_order_line_user","stock.estimation.order.line.user","model_stock_estimation_order_line","stock.group_stock_user",0,0,0,0 
+"access_stock_estimation_order_line_manager","stock.estimation.order.line.manager","model_stock_estimation_order_line","stock.group_stock_manager",1,1,1,1
+"access_stock_estimation_order_wizard_user","stock.estimation.order.wizard.user","model_stock_estimation_order_wizard","stock.group_stock_user",0,0,0,0 
+"access_stock_estimation_order_wizard_manager","stock.estimation.order.wizard.manager","model_stock_estimation_order_wizard","stock.group_stock_manager",1,1,1,1
+

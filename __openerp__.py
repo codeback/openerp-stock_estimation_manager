@@ -33,6 +33,7 @@
     'sequence': 23,
     'demo': [],
     'data': [
+        'security/ir.model.access.csv',
         'stock_estimation_view.xml',
         'res_config_view.xml',        
         'product_view.xml',

@@ -45,6 +45,6 @@
             <field name="target">inline</field>
         </record>
 
-        <menuitem name="Stock Estimation" id="menu_action_stock_estimation_config" parent="stock.menu_stock_configuration" action="action_stock_estimation_config" sequence="20"/>
+        <menuitem name="Stock Estimation" id="menu_action_stock_estimation_config" groups="stock.group_stock_manager,stock.group_stock_user" parent="stock.menu_stock_configuration" action="action_stock_estimation_config" sequence="20"/>
     </data>
 </openerp>
