@@ -32,12 +32,13 @@ import pdb
 class stock_estimation(osv.osv):   
     _name = "stock.estimation"
     _columns = {
-        'stock_status': fields.selection([('ale','Alert'),('cau','Caution'),('ava','Available')],'Stock status'),
+        'stock_status': fields.selection([('level1','Danger'),('level2','Warning'), ('level3','Caution'),('level4','Available')],'Stock status'),
         'product_name': fields.char('Product', size=128, required=True),
         'product_id': fields.many2one('product.product', 'Product', readonly=True),
         'outgoings_per_day': fields.float('Outgoings per day'),
         'expected_per_day': fields.float('Expected per day'),
         'security_stock': fields.float('Security Stock'),
+        'security_days': fields.float('Security Days'),
         'required_qty': fields.float('Required order quantity'),
         'stock_min': fields.float('Min. stock'),
         'stock_max': fields.float('Max. stock'),        
@@ -53,99 +54,135 @@ class stock_estimation(osv.osv):
 
     def estimate_stock(self, cr, uid):        
         
-        # Leer datos de configutacion
-        model_conf = self.pool.get('stock.estimation.config.settings')        
-        ids = model_conf.search(cr, uid, [])
-        config = model_conf.browse(cr, uid, ids)
-
-        if config and config[0]:
-            config_data = config[0]
-        else:
-            obj_id = model_conf.create(cr, uid, {})
-            config = model_conf.browse(cr, uid, [obj_id])
-            config_data = config[0]
-                
-        CALCULATION_WINDOW_DAYS = config_data.default_window_days
-        QOS = config_data.default_qos
-        MANUFACTURING_MATERIALS = config_data.default_include_bom
-        SIGMA_FACTOR = config_data.default_sigma_factor       
-
         # Eliminar todos los objetos actuales
         self._clear_objects(cr, uid)
+
+        # Leer datos de configutacion
+        config = self._get_config_data(cr,uid)              
 
         # Obtener las localizaciones objetivo (de tipo cliente y opcionalmente
         # los materiales utilizados en la fabricacion
         stock_locations = self._get_locations(cr, uid, 'customer')
-        if MANUFACTURING_MATERIALS:
+        if config['include_bom']:
             stock_locations_production = self._get_locations(cr, uid, 'production')
             stock_locations.extend(stock_locations_production)
 
         # Obtener todos los movimientos cuyo destino final sea una localizacion
         # objetivo y esten dentro de los dias de la ventana de calculo
-        stock_moves = self._get_moves_in_window(cr, uid, stock_locations, CALCULATION_WINDOW_DAYS)
+        stock_moves = self._get_moves_in_window(cr, uid, stock_locations, config['window_days'])
 
         # Agrupar los movimientos por producto y fecha
         outgoings = self._group_by_product_and_date(stock_moves)
         
         for product in outgoings.keys():
-            # Se comprueba si es un producto almacenable (tipo='product') y si tiene activado 
-            # el modulo estimacion de stock
-            if product.type == 'product' and \
-                product.stock_estimation_mode and product.stock_estimation_mode != 'd':
+
+            if self._is_valid_product(product):
 
                 outgoing_qties = self._get_qties_per_day(
-                    outgoings[product].values(), CALCULATION_WINDOW_DAYS)
+                    outgoings[product].values(), config['window_days'])
      
                 # Eliminar outliers
-                outgoing_qties = self._remove_outliers(outgoing_qties, SIGMA_FACTOR)
+                outgoing_qties = self._remove_outliers(outgoing_qties, config['sigma_factor'])
 
-                # Calculo de la cdf inversa usando QoS
-                mean, expected_outgoings = self._calculate_inverse_cdf(outgoing_qties, QOS)
-                
-                # Guardar resultados
-                outgoings_per_day = Decimal(mean)
-                expected_per_day = Decimal(expected_outgoings)
                 stock_real = Decimal(product.qty_available)
                 stock_virtual = Decimal(product.virtual_available)
-                supplier_delay = Decimal(product.seller_delay)
-                stock_min = Decimal(expected_per_day * supplier_delay)            
-                security_stock = stock_virtual-stock_min
-                
-                stock_status = 'ava'
-                if security_stock < 0:
-                    stock_status = 'ale'                    
-                    stock_max = Decimal(2.0) * stock_min - stock_virtual                    
-                    required_qty = stock_max - stock_virtual
+                qos = config['qos']
+
+                # 3 niveles de estimación
+                ALERT_OFFSET = 0.05
+                estimation = self._estimate_product(product, outgoing_qties, qos)                
+
+                if estimation['security_stock'] < 0:
+                    # Producto con estimación Danger 
+                    stock_status = 'level1'    
+                    stock_min = estimation['stock_min']                                              
+                    required_qty = estimation['required_qty']
+                    stock_max = required_qty + stock_virtual          
+
                 else:                    
-                    if security_stock < 1*supplier_delay:
-                        stock_status = 'cau'    
 
-                    stock_max = 0
-                    required_qty = 0
+                    estimation2 = self._estimate_product(product, outgoing_qties, qos+ALERT_OFFSET) 
 
+                    if estimation2['security_stock'] < 0:
+                        # Producto con estimación Warning 
+                        stock_status = 'level2'                        
+                        stock_min = estimation2['stock_min']                
+                        required_qty = estimation2['required_qty']
+                        stock_max = required_qty + stock_virtual 
+                    else:
+                        stock_status = 'level4'
+                        stock_min = 0
+                        stock_max = 0
+                        required_qty = 0
 
+                        if qos+2*ALERT_OFFSET <= 1:
+                            estimation3 = self._estimate_product(product, outgoing_qties, qos+2*ALERT_OFFSET) 
+
+                            if estimation3['security_stock'] < 0:
+                                # Producto con estimación Caution 
+                                stock_status = 'level3'
+                                required_qty = estimation3['required_qty']
 
                 record = {
                     'stock_status': stock_status,
                     'product_name': product.code,
                     'product_id': product.id,
-                    'security_stock': security_stock,
+                    'security_stock': estimation['security_stock'],
+                    'security_days': estimation['security_days'],
                     'required_qty': required_qty,
-                    'outgoings_per_day': outgoings_per_day,
-                    'expected_per_day': expected_per_day,
+                    'outgoings_per_day': estimation['outgoings_per_day'],
+                    'expected_per_day': estimation['expected_per_day'],
                     'stock_min': stock_min,
                     'stock_max': stock_max,
                     'stock_virtual': stock_virtual,
                     'stock_real': stock_real,
-                    'supplier_delay': supplier_delay
+                    'supplier_delay': product.seller_delay
                 }
+
                 self.create(cr, uid, record)
                 
                 # Actualizar Qmin y Qmax del punto de pedido
                 if product.stock_estimation_mode == 'a':
-                    self._update_orderpoint(cr, uid, product.orderpoint_ids, stock_min, stock_max)
+                    self._update_orderpoint(cr, uid, product.orderpoint_ids, record['stock_min'], record['stock_max'])
 
         return True
+
+    def _estimate_product(self, product, outgoing_qties, qos):
+
+        # Calculo de la cdf inversa usando QoS
+        mean, expected_outgoings = self._calculate_inverse_cdf(outgoing_qties, qos)
+                        
+        # Calcular resultados
+        outgoings_per_day = Decimal(mean)
+        expected_per_day = Decimal(expected_outgoings)
+        stock_real = Decimal(product.qty_available)
+        stock_virtual = Decimal(product.virtual_available)
+        supplier_delay = Decimal(product.seller_delay)
+        stock_min = Decimal(expected_per_day * supplier_delay)            
+        security_stock = Decimal(stock_virtual-stock_min)
+        security_days = Decimal(stock_virtual / expected_per_day)
+        required_qty = Decimal(2.0) * (stock_min - stock_virtual)
+        
+        # Comprobar que la cantidad requerida es al menos 1 unidad de la cantidad mínima
+        required_qty = self._get_uom_qty(required_qty, product.uom_id.rounding)
+        if required_qty < product.uom_id.rounding:
+            security_stock = 0            
+
+        return {                       
+            'security_stock': security_stock,
+            'security_days': security_days,            
+            'outgoings_per_day': outgoings_per_day,
+            'expected_per_day': expected_per_day,
+            'stock_min': stock_min,
+            'required_qty': required_qty            
+        }
+
+    def _get_uom_qty(self, required_qty, precision, count=0):
+        if precision >= 1:
+            return Decimal(round(required_qty,count))
+        else:
+            count=count+1
+            return self._get_uom_qty(required_qty, precision*10, count=count)
 
     def _get_objects(self, cr, uid, name, args=[], ids=None):   
         """
@@ -224,7 +261,7 @@ class stock_estimation(osv.osv):
         Halla la media y la desv. tipica para cada producto y se calcula la 
         cdf inversa utilizando la QoS deseada para cada producto
         """
-        mean, standard_deviation = self._calculate_mean_and_std(outgoing_qties)        
+        mean, standard_deviation = self._calculate_mean_and_std(outgoing_qties)
         return (mean, norm(mean, standard_deviation).ppf(qos))
 
     def _remove_outliers(self, outgoing_qties, sigma_factor):
@@ -251,6 +288,50 @@ class stock_estimation(osv.osv):
                 'product_max_qty': stock_max
             }
             orderpoint.write(cr, uid, [id_op], values)
+
+    def _get_config_data(self, cr, uid):
+        """
+        Lee los datos de configutacion
+        """
+
+        model_conf = self.pool.get('stock.estimation.config.settings')        
+        ids = model_conf.search(cr, uid, [])
+        config = model_conf.browse(cr, uid, ids)
+
+        if config and config[0]:
+            config_data = config[0]
+        else:
+            obj_id = model_conf.create(cr, uid, {})
+            config = model_conf.browse(cr, uid, [obj_id])
+            config_data = config[0]
+
+        return {
+            'window_days': config_data.default_window_days,
+            'qos': config_data.default_qos,
+            'include_bom': config_data.default_include_bom,
+            'sigma_factor': config_data.default_sigma_factor
+        }
+
+    def _is_valid_product(self, product):
+        if product.active \
+        and self._is_stockable(product) \
+        and self._is_module_activated(product) \
+        and self._is_buyable(product) \
+        and self._is_state_normal(product):
+            return True
+        return False
+
+    def _is_stockable(self, product):
+        return product.type and product.type == 'product'
+
+    def _is_module_activated(self, product):
+        return product.stock_estimation_mode and product.stock_estimation_mode != 'd'
+
+    def _is_buyable(self, product):
+        return product.supply_method and product.supply_method == 'buy'
+
+    def _is_state_normal(self, product):
+        return not product.state or product.state == 'sellable'
 
 stock_estimation()
 

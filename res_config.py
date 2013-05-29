@@ -21,6 +21,7 @@
 ##############################################################################
 
 from openerp.osv import fields,osv
+from openerp.tools.translate import _
 
 class stock_estimation_config_settings(osv.osv_memory):   
     _name = "stock.estimation.config.settings"
@@ -34,8 +35,8 @@ class stock_estimation_config_settings(osv.osv_memory):
     } 
 
     _defaults = {
-        'default_window_days': 30,
-        'default_qos' : 0.7,
+        'default_window_days': 45,
+        'default_qos' : 0.66,
         'default_include_bom' : True,
         'default_sigma_factor' : 2,
     }  
@@ -48,5 +49,25 @@ class stock_estimation_config_settings(osv.osv_memory):
         else:
             id = super(stock_estimation_config_settings, self).create(cr, uid, values, context)
         return id
+
+    def execute(self, cr, uid, ids, context=None):
+        ids = self.search(cr, uid, [])
+        if ids and ids[0]:
+            objs = self.browse(cr, uid, [ids[0]], context)
+            self._validate_qos(objs[0].default_qos)
+
+        return super(stock_estimation_config_settings, self).execute(cr, uid, ids, context)  
+
+    def onchange_validate_qos(self, cr, uid, ids, default_qos):
+        return self._validate_qos(default_qos)
+
+    def _validate_qos(self, qos):
+        if qos < 0.01:
+            raise osv.except_osv(_('Invalid QoS!'), _('Your Quality of Service (QoS) must not be lower than 0.01'))
+        
+        if qos > 0.95:            
+            raise osv.except_osv(_('Invalid QoS!'), _('Your Quality of Service (QoS) must not be higher than 0.95'))
+
+        return {'value': qos}
 
 stock_estimation_config_settings()

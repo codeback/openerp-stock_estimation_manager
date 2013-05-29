@@ -21,7 +21,7 @@
                             </div>
                             <div>
                                 <label for="default_qos"/>
-                                <field name="default_qos" class="oe_inline"/>
+                                <field name="default_qos" on_change="onchange_validate_qos(default_qos)" class="oe_inline"/>
                             </div>
                             <div>
                                 <label for="default_include_bom"/>
