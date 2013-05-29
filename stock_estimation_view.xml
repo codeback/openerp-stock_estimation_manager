@@ -18,7 +18,8 @@
                     <field name="stock_max" invisible="1"/>                
                     <field name="stock_virtual" select="1"/>               
                     <field name="stock_real" select="1"/>                      
-                    <field name="supplier_delay" select="1"/>                        
+                    <field name="supplier_name" select="1"/>
+                    <field name="supplier_delay" select="1"/>                                            
                 </tree>
             </field>
         </record>
@@ -47,6 +48,7 @@
                     <filter string="Available" name="ready" domain="[('stock_status','=','level4')]"/>
                     <group expand="0" string="Group By...">
                         <filter string="Status" name="by_status" icon="terp-stock_effects-object-colorize" domain="[]"  context="{'group_by':'stock_status'}"/>
+                        <filter string="Supplier" name="by_supplier" icon="terp-stock_effects-object-colorize" domain="[]"  context="{'group_by':'supplier_name'}"/>
                     </group>
                 </search>
             </field>

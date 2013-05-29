@@ -39,12 +39,13 @@ class stock_estimation(osv.osv):
         'expected_per_day': fields.float('Expected per day'),
         'security_stock': fields.float('Security Stock'),
         'security_days': fields.float('Security Days'),
-        'required_qty': fields.float('Required order quantity'),
+        'required_qty': fields.float('Required quantity'),
         'stock_min': fields.float('Min. stock'),
         'stock_max': fields.float('Max. stock'),        
         'stock_virtual': fields.float('Virtual stock'),
         'stock_real': fields.float('Real stock'),
-        'supplier_delay': fields.float('Supplier lead time')
+        'supplier_delay': fields.float('Lead time'),
+        'supplier_name': fields.char('Supplier', size=64),
         }  
 
     def run_scheduler(self, cr, uid, context=None):
@@ -136,7 +137,8 @@ class stock_estimation(osv.osv):
                     'stock_max': stock_max,
                     'stock_virtual': stock_virtual,
                     'stock_real': stock_real,
-                    'supplier_delay': product.seller_delay
+                    'supplier_delay': product.seller_delay,
+                    'supplier_name': product.seller_id.name
                 }
 
                 self.create(cr, uid, record)
