@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0-20130325-002404\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-27 07:42+0000\n"
-"PO-Revision-Date: 2013-05-27 07:42+0000\n"
-"Last-Translator: Codeback Software <info@codeback.es>\n"
+"POT-Creation-Date: 2013-05-29 18:09+0000\n"
+"PO-Revision-Date: 2013-05-29 18:09+0000\n"
+"Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,6 +42,16 @@ msgid "Security Stock"
 msgstr "Stock de seguridad"
 
 #. module: stock_estimation
+#: view:stock.estimation:0
+msgid "Status"
+msgstr "Estado"
+
+#. module: stock_estimation
+#: view:stock.estimation:0
+msgid "Group By..."
+msgstr "Agrupar por..."
+
+#. module: stock_estimation
 #: model:ir.actions.act_window,help:stock_estimation.action_stock_estimation
 #: model:ir.actions.act_window,name:stock_estimation.action_stock_estimation
 #: model:ir.ui.menu,name:stock_estimation.menu_action_stock_estimation_config
@@ -63,12 +73,24 @@ msgid "stock.estimation.settings"
 msgstr "stock.estimation.settings"
 
 #. module: stock_estimation
+#: view:stock.estimation:0
+#: field:stock.estimation,supplier_name:0
+msgid "Supplier"
+msgstr "Proveedor"
+
+#. module: stock_estimation
 #: field:stock.estimation.config.settings,default_include_bom:0
 #: field:stock.estimation.settings,include_bom:0
 msgid "Include BoM"
 msgstr "Incluir BoM"
 
 #. module: stock_estimation
+#: field:stock.estimation,security_days:0
+msgid "Security Days"
+msgstr "Días de seguridad"
+
+#. module: stock_estimation
+#: view:stock.estimation:0
 #: selection:stock.estimation,stock_status:0
 msgid "Available"
 msgstr "Disponible"
@@ -109,22 +131,6 @@ msgid "Auto"
 msgstr "Auto"
 
 #. module: stock_estimation
-#: view:stock.estimation.order.wizard:0
-#: view:stock.estimation.settings:0
-msgid "_Cancel"
-msgstr "_Cancelar"
-
-#. module: stock_estimation
-#: selection:stock.estimation,stock_status:0
-msgid "Alert"
-msgstr "Alerta"
-
-#. module: stock_estimation
-#: field:stock.estimation,supplier_delay:0
-msgid "Supplier lead time"
-msgstr "Tiempo de entrega del proveedor"
-
-#. module: stock_estimation
 #: model:ir.model,name:stock_estimation.model_stock_estimation_config_settings
 msgid "stock.estimation.config.settings"
 msgstr "stock.estimation.config.settings"
@@ -155,14 +161,20 @@ msgid "Wizard"
 msgstr "Wizard"
 
 #. module: stock_estimation
-#: field:stock.estimation,required_qty:0
-msgid "Required order quantity"
-msgstr "Cantidad requerida para el pedido"
+#: view:stock.estimation.order.wizard:0
+#: view:stock.estimation.settings:0
+msgid "_Cancel"
+msgstr "_Cancelar"
 
 #. module: stock_estimation
 #: model:ir.ui.menu,name:stock_estimation.menu_action_stock_estimation
 msgid "Stock estimation manager"
 msgstr "Gestión de stock"
+
+#. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_stock_estimation
+msgid "stock.estimation"
+msgstr "stock.estimation"
 
 #. module: stock_estimation
 #: view:stock.estimation:0
@@ -180,9 +192,9 @@ msgid "Expected per day"
 msgstr "Esperado por día"
 
 #. module: stock_estimation
-#: model:ir.model,name:stock_estimation.model_stock_estimation_order_wizard
-msgid "stock.estimation.order.wizard"
-msgstr "stock.estimation.order.wizard"
+#: view:stock.estimation.config.settings:0
+msgid "Cancel"
+msgstr "Cancelar"
 
 #. module: stock_estimation
 #: field:product.product,stock_estimation_mode:0
@@ -200,10 +212,22 @@ msgid "Products"
 msgstr "Productos"
 
 #. module: stock_estimation
+#: code:addons/stock_estimation/res_config.py:66
+#: code:addons/stock_estimation/res_config.py:69
+#, python-format
+msgid "Invalid QoS!"
+msgstr "QoS inválida!"
+
+#. module: stock_estimation
 #: model:ir.actions.act_window,name:stock_estimation.action_stock_estimation_run
 #: view:stock.estimation.settings:0
 msgid "Run stock estimation manually"
 msgstr "Ejecutar manualmente estimación de Stock"
+
+#. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_stock_estimation_order_wizard
+msgid "stock.estimation.order.wizard"
+msgstr "stock.estimation.order.wizard"
 
 #. module: stock_estimation
 #: model:ir.actions.act_window,name:stock_estimation.action_stock_estimation_config
@@ -212,10 +236,9 @@ msgid "Stock estimation configuration"
 msgstr "Configuración de la estimación de stock"
 
 #. module: stock_estimation
-#: view:stock.estimation.order.line:0
-#: field:stock.estimation.order.wizard,order_lines_ids:0
-msgid "Order lines"
-msgstr "Líneas de pedido"
+#: view:stock.estimation.order.wizard:0
+msgid "Products to order"
+msgstr "Productos a pedir"
 
 #. module: stock_estimation
 #: field:stock.estimation.order.line,quantity:0
@@ -228,9 +251,10 @@ msgid "Stock status"
 msgstr "Estado del Stock"
 
 #. module: stock_estimation
-#: model:ir.model,name:stock_estimation.model_stock_estimation
-msgid "stock.estimation"
-msgstr "stock.estimation"
+#: code:addons/stock_estimation/res_config.py:66
+#, python-format
+msgid "Your Quality of Service (QoS) must not be lower than 0.01"
+msgstr "La calidad de servicio (QoS) no debe ser menor que 0.01"
 
 #. module: stock_estimation
 #: field:stock.estimation.config.settings,default_sigma_factor:0
@@ -253,10 +277,21 @@ msgstr " Si pulsas el botón 'ejecutar', el módulo estimará el stock de aquell
 " * La opción automática actualiza automáticamente los valores de stock mínimo y máximo del primer punto de pedido. Los pedidos serán generados de forma automática por el planificador MRP."
 
 #. module: stock_estimation
+#: view:stock.estimation:0
+#: selection:stock.estimation,stock_status:0
+msgid "Danger"
+msgstr "Peligro"
+
+#. module: stock_estimation
 #: code:addons/stock_estimation/wizard/wizard_order.py:98
 #, python-format
 msgid "Stock Estimation Module"
 msgstr "Módulo de Estimación de Stock"
+
+#. module: stock_estimation
+#: field:stock.estimation,required_qty:0
+msgid "Required quantity"
+msgstr "Cantidad requerida"
 
 #. module: stock_estimation
 #: selection:product.product,stock_estimation_mode:0
@@ -264,6 +299,19 @@ msgid "Disabled"
 msgstr "Deshabilitado"
 
 #. module: stock_estimation
+#: code:addons/stock_estimation/res_config.py:69
+#, python-format
+msgid "Your Quality of Service (QoS) must not be higher than 0.95"
+msgstr "La calidad de servicio (QoS) no debe ser mayor que 0.95"
+
+#. module: stock_estimation
+#: view:stock.estimation:0
+#: selection:stock.estimation,stock_status:0
+msgid "Warning"
+msgstr "Alerta"
+
+#. module: stock_estimation
+#: view:stock.estimation:0
 #: selection:stock.estimation,stock_status:0
 msgid "Caution"
 msgstr "Precaución"
@@ -274,9 +322,9 @@ msgid "Min. stock"
 msgstr "Stock min."
 
 #. module: stock_estimation
-#: view:stock.estimation.config.settings:0
-msgid "Cancel"
-msgstr "Cancelar"
+#: field:stock.estimation,supplier_delay:0
+msgid "Lead time"
+msgstr "Tiempo de entrega"
 
 #. module: stock_estimation
 #: view:stock.estimation.config.settings:0
@@ -284,9 +332,10 @@ msgid "Apply"
 msgstr "Aplicar"
 
 #. module: stock_estimation
-#: view:stock.estimation.order.wizard:0
-msgid "Products to order"
-msgstr "Productos a pedir"
+#: view:stock.estimation.order.line:0
+#: field:stock.estimation.order.wizard,order_lines_ids:0
+msgid "Order lines"
+msgstr "Líneas de pedido"
 
 #. module: stock_estimation
 #: view:stock.estimation.config.settings:0
