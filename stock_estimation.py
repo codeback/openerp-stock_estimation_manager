@@ -53,64 +53,70 @@ class stock_estimation(osv.osv):
         self.estimate_stock(cr, uid)
         return True     
 
-    def estimate_stock(self, cr, uid):        
+    def estimate_stock(self, cr, uid):              
         
         # Eliminar todos los objetos actuales
         self._clear_objects(cr, uid)
-
+                
         # Leer datos de configutacion
         config = self._get_config_data(cr,uid)              
-
+        
         # Obtener las localizaciones objetivo (de tipo cliente y opcionalmente
         # los materiales utilizados en la fabricacion
         stock_locations = self._get_locations(cr, uid, 'customer')
         if config['include_bom']:
             stock_locations_production = self._get_locations(cr, uid, 'production')
             stock_locations.extend(stock_locations_production)
-
+        
         # Obtener todos los movimientos cuyo destino final sea una localizacion
         # objetivo y esten dentro de los dias de la ventana de calculo
         stock_moves = self._get_moves_in_window(cr, uid, stock_locations, config['window_days'])
-
+        
         # Agrupar los movimientos por producto y fecha
         outgoings = self._group_by_product_and_date(stock_moves)
         
         for product in outgoings.keys():
-
+            
             if self._is_valid_product(product):
-
+                
                 outgoing_qties = self._get_qties_per_day(
                     outgoings[product].values(), config['window_days'])
-     
+                
                 # Eliminar outliers
                 outgoing_qties = self._remove_outliers(outgoing_qties, config['sigma_factor'])
-
+                
                 stock_real = Decimal(product.qty_available)
                 stock_virtual = Decimal(product.virtual_available)
                 qos = config['qos']
-
+                
                 # 3 niveles de estimación
                 ALERT_OFFSET = 0.05
                 estimation = self._estimate_product(product, outgoing_qties, qos)                
-
+                
                 if estimation['security_stock'] < 0:
+                    
                     # Producto con estimación Danger 
                     stock_status = 'level1'    
+                    
                     stock_min = estimation['stock_min']                                              
+                    
                     required_qty = estimation['required_qty']
+                    
                     stock_max = required_qty + stock_virtual          
-
+                    
                 else:                    
-
+                    
                     estimation2 = self._estimate_product(product, outgoing_qties, qos+ALERT_OFFSET) 
-
+                    
                     if estimation2['security_stock'] < 0:
+                        
                         # Producto con estimación Warning 
                         stock_status = 'level2'                        
                         stock_min = estimation2['stock_min']                
                         required_qty = estimation2['required_qty']
                         stock_max = required_qty + stock_virtual 
                     else:
+                        
                         stock_status = 'level4'
                         stock_min = 0
                         stock_max = 0
@@ -123,10 +129,10 @@ class stock_estimation(osv.osv):
                                 # Producto con estimación Caution 
                                 stock_status = 'level3'
                                 required_qty = estimation3['required_qty']
-
+                
                 record = {
                     'stock_status': stock_status,
-                    'product_name': product.code,
+                    'product_name': product.code or product.name,
                     'product_id': product.id,
                     'security_stock': estimation['security_stock'],
                     'security_days': estimation['security_days'],
@@ -140,11 +146,12 @@ class stock_estimation(osv.osv):
                     'supplier_delay': product.seller_delay,
                     'supplier_name': product.seller_id.name
                 }
-
+                
                 self.create(cr, uid, record)
                 
                 # Actualizar Qmin y Qmax del punto de pedido
                 if product.stock_estimation_mode == 'a':
+                    
                     self._update_orderpoint(cr, uid, product.orderpoint_ids, record['stock_min'], record['stock_max'])
 
         return True
