@@ -38,6 +38,7 @@
         'stock_estimation_data.xml',        
         'product_view.xml',
         'wizard/wizard_order.xml',
+        'wizard/wizard_operation_mode.xml',
     ],
     'test': [],
     'installable': True,

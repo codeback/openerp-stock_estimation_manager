@@ -21,3 +21,4 @@
 ##############################################################################
 
 import wizard_order
+import wizard_operation_mode

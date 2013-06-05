@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_stock_estimation_mode" model="ir.ui.view">
+            <field name="name">Apply operation mode</field>
+            <field name="model">stock.estimation.mode.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Operation mode" version="7.0">          
+                    <field name="operation_mode"/>          
+                    <footer>
+                        <button special="cancel" string="_Cancel" icon='gtk-cancel'/>
+                        or
+                        <button name="apply_mode" string="Apply mode" type="object" icon="terp-gtk-go-back-rtl"/>
+                    </footer>
+                </form>              
+            </field>
+        </record>
+
+        <act_window name="Apply operation mode"
+            res_model="stock.estimation.mode.wizard"
+            src_model="stock.estimation"
+            key2="client_action_multi"
+            multi="True"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            id="action_apply_operation_mode"/>
+    </data>
+</openerp>
+

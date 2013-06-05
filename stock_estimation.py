@@ -372,9 +372,9 @@ class stock_estimation_settings(osv.osv):
 
     def unlink (self, cr, uid, ids, context=None):        
         args = []
-        ids2 = self.search(cr, uid, args)        
+        ids_all = self.search(cr, uid, args)        
         
-        if len(ids) == len(ids2):
+        if len(ids) == len(ids_all):
             raise osv.except_osv(_('Error removing objects!'), _('You cannot remove all records'))
         else:
             for id in ids:
