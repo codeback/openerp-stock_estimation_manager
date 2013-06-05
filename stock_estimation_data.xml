@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp >
+    <data noupdate="1">
+        <record id="stock_estimation_settings_default" model="stock.estimation.settings">
+            <field name="name">Default</field>
+            <field name="window_days">45</field>
+            <field name="qos">0.75</field>
+            <field name="include_bom" eval="True"/>
+            <field name="sigma_factor">2</field>
+            <field name="selected" eval="True"/>
+        </record>
+    </data>
+</openerp>

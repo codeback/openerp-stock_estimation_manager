@@ -78,6 +78,7 @@
         <record id="view_run_stock_estimation" model="ir.ui.view">
             <field name="name">Run stock estimation</field>
             <field name="model">stock.estimation.settings</field>
+            <field name="priority" eval="15"/>
             <field name="arch" type="xml">
                 <form string="Run stock estimation manually" version="7.0">
                     <label string="
@@ -92,16 +93,66 @@ If you press 'Run' button, the Stock Estimation module will estimate the stock o
             </field>
         </record>
 
-        <act_window name="Run stock estimation manually"
-            key2="client_action_multi"
-            res_model="stock.estimation.settings"
-            view_mode="form"
-            target="new"
-            id="action_stock_estimation_run"/>
+        <record model="ir.ui.view" id="view_stock_estimation_settings_tree">
+            <field name="name">stock.estimation.settings.tree</field>
+            <field name="model">stock.estimation.settings</field>
+            <field name="arch" type="xml">
+                <tree string="Parameter configurations">
+                    <field name="name" select="1"/>
+                    <field name="window_days" select="1"/>                   
+                    <field name="qos" select="1"/>
+                    <field name="include_bom" select="1"/>
+                    <field name="sigma_factor" select="1"/>
+                    <field name="selected" select="1"/> 
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_stock_estimation_settings_form">
+            <field name="name">stock.estimation.settings.form</field>
+            <field name="model">stock.estimation.settings</field>
+            <field name="priority" eval="12"/>
+            <field name="arch" type="xml">
+                <form string="Stock estimation settings">
+                    <separator string="General Information" colspan="4"/>
+                    <field name="name" select="1"/>                    
+                    <group string="Estimation Parameters" colspan="4">
+                        <field name="id" invisible="1"/>  
+                        <field name="window_days"/>                   
+                        <field name="qos" on_change="onchange_validate_qos(qos)"/>
+                        <field name="include_bom"/>
+                        <field name="sigma_factor"/>   
+                        <field name="selected"/>                       
+                    </group>         
+                </form>
+            </field>
+        </record>
+
+        <record id="action_stock_estimation_run" model="ir.actions.act_window">
+            <field name="name">Run stock estimation manually</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.estimation.settings</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_run_stock_estimation"/>
+        </record>
+
+        <record id="action_stock_estimation_settings" model="ir.actions.act_window">
+            <field name="name">Stock estimation settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.estimation.settings</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_stock_estimation_settings_tree"/>
+        </record>
 
         <menuitem name="Stock Estimation" id="menu_stock_estimation_manager" groups="stock.group_stock_manager,stock.group_stock_user" parent="stock.menu_stock_root" sequence="12"/>
+
         <menuitem name="Stock estimation manager" id="menu_action_stock_estimation" groups="stock.group_stock_manager,stock.group_stock_user" parent="menu_stock_estimation_manager" action="action_stock_estimation" sequence="10"/>
+
         <menuitem name="Run manually" id="menu_action_stock_estimation_run" groups="stock.group_stock_manager,stock.group_stock_user" parent="menu_stock_estimation_manager" action="action_stock_estimation_run" sequence="15"/>
+
+        <menuitem name="Stock Estimation" id="menu_action_stock_estimation_settings" groups="stock.group_stock_manager,stock.group_stock_user" parent="stock.menu_stock_configuration" action="action_stock_estimation_settings" sequence="20"/>
 
     </data>
 </openerp>

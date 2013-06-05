@@ -303,22 +303,16 @@ class stock_estimation(osv.osv):
         Lee los datos de configutacion
         """
 
-        model_conf = self.pool.get('stock.estimation.config.settings')        
-        ids = model_conf.search(cr, uid, [])
-        config = model_conf.browse(cr, uid, ids)
-
-        if config and config[0]:
-            config_data = config[0]
-        else:
-            obj_id = model_conf.create(cr, uid, {})
-            config = model_conf.browse(cr, uid, [obj_id])
-            config_data = config[0]
+        model_conf = self.pool.get('stock.estimation.settings')
+        args = [('selected', '=', True)]    
+        ids = model_conf.search(cr, uid, args)
+        config = model_conf.browse(cr, uid, ids[0])
 
         return {
-            'window_days': config_data.default_window_days,
-            'qos': config_data.default_qos,
-            'include_bom': config_data.default_include_bom,
-            'sigma_factor': config_data.default_sigma_factor
+            'window_days': config.window_days,
+            'qos': config.qos,
+            'include_bom': config.include_bom,
+            'sigma_factor': config.sigma_factor
         }
 
     def _is_valid_product(self, product):
@@ -348,20 +342,70 @@ class stock_estimation_settings(osv.osv):
     _name = "stock.estimation.settings"
     
     _columns = {
-        'window_days': fields.integer('Window days'),
-        'qos': fields.float('Quality of Service'),
+        'name': fields.char('Name', size=64, required=True),
+        'window_days': fields.integer('Window days', required=True),
+        'qos': fields.float('Quality of Service', required=True),
         'include_bom': fields.boolean('Include BoM'),
-        'sigma_factor': fields.float('Sigma Factor'),    
+        'sigma_factor': fields.float('Sigma Factor', required=True),
+        'selected': fields.boolean('Selected'),
+    } 
+    
+    _defaults = {
+        'name' : "Default",
+        'window_days': 45,
+        'qos' : 0.75,
+        'include_bom' : True,
+        'sigma_factor' : 2,
+        'selected': False,
     } 
 
-    def create(self, cr, uid, values, context=None):
-        ids = self.search(cr, uid, [])
-        if ids and ids[0]:
-            id=ids[len(ids)-1]
-            self.write(cr, uid, [id], values, context)
+    def onchange_validate_qos(self, cr, uid, ids, qos):        
+        return self._validate_qos(qos)
+
+    def write (self, cr, uid, ids, values, context=None):        
+        if 'qos' in values:
+            self._validate_qos(values['qos'])
+        if 'selected' in values:
+            self._validate_selected(cr, uid, ids, values['selected'])
+
+        return super(stock_estimation_settings, self).write(cr, uid, ids, values, context=context)
+
+    def unlink (self, cr, uid, ids, context=None):        
+        args = []
+        ids2 = self.search(cr, uid, args)        
+        
+        if len(ids) == len(ids2):
+            raise osv.except_osv(_('Error removing objects!'), _('You cannot remove all records'))
         else:
-            id = super(stock_estimation_settings,self).create(cr, uid, values, context)
-        return id
+            for id in ids:
+                pdb.set_trace()
+                if self.browse(cr, uid, id).selected ==True:
+                    raise osv.except_osv(_('Error removing objects!'), _('You cannot remove a record with value "selected" = True'))
+
+        return super(stock_estimation_settings, self).unlink(cr, uid, ids, context=context)
+
+    def _validate_qos(self, qos):        
+        if qos < 0.01:
+            raise osv.except_osv(_('Invalid QoS!'), _('Your Quality of Service (QoS) must not be lower than 0.01'))
+        
+        if qos > 0.95:            
+            raise osv.except_osv(_('Invalid QoS!'), _('Your Quality of Service (QoS) must not be higher than 0.95'))
+
+        return {'value': qos}
+
+    def _validate_selected(self, cr, uid, ids, selected):      
+        args = [('selected', '=', True)]
+        ids_selected = self.search(cr, uid, args)        
+        if not selected:
+            if ids_selected and ids_selected[0] == ids[0]:
+                raise osv.except_osv(_('Invalid Selected!'), _('You cannot deselect all configurations. Please, select another configuration first.'))
+        else:                        
+            values = {
+                'selected': False,
+            }
+            super(stock_estimation_settings, self).write(cr, uid, ids_selected, values)
+
+        return {'value': selected}
 
     def run_stock_estimation(self, cr, uid, ids, context=None):
         """ Estimate stock from wizard"""    

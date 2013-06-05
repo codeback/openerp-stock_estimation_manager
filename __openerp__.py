@@ -35,7 +35,7 @@
     'data': [
         'security/ir.model.access.csv',
         'stock_estimation_view.xml',
-        'res_config_view.xml',        
+        'stock_estimation_data.xml',        
         'product_view.xml',
         'wizard/wizard_order.xml',
     ],
