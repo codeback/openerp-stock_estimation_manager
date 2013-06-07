@@ -151,8 +151,11 @@ class stock_estimation(osv.osv):
                 
                 # Actualizar Qmin y Qmax del punto de pedido
                 if product.stock_estimation_mode == 'a':
-                    
+                    # Modo automático
                     self._update_orderpoint(cr, uid, product.orderpoint_ids, record['stock_min'], record['stock_max'])
+                else:
+                    # Modo manual
+                    self._update_orderpoint(cr, uid, product.orderpoint_ids, 0, 0)
 
         return True
 
