@@ -25,7 +25,7 @@ from tools.translate import _
 import pdb
 import netsvc
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class stock_estimation_order_line(osv.TransientModel):
 
@@ -72,16 +72,15 @@ class stock_estimation_order_wizard (osv.osv_memory):
         
         wf_service = netsvc.LocalService("workflow")
         proc_obj = self.pool.get('procurement.order')
-        #stock_est = self.pool.get('stock.estimation')
         order = self.browse(cr, uid, ids[0], context=context)
-        # stock_est_objs = stock_est.browse(cr, uid, context['active_ids'], context=context)
 
         for order_line in order.order_lines_ids:
             product = order_line.product_id
 
             if product.orderpoint_ids and product.orderpoint_ids[0]:
+                
                 warehouse = product.orderpoint_ids[0].warehouse_id
-            
+                
                 proc_id = proc_obj.create(cr, uid,
                                 self._prepare_procurement(cr, uid, product, warehouse, order_line.quantity, context=context),
                                 context=context)
@@ -94,13 +93,17 @@ class stock_estimation_order_wizard (osv.osv_memory):
                 '''
 
     def _prepare_procurement(self, cr, uid, product, warehouse, product_qty, context=None):
+
+        date = (datetime.today() + timedelta(days=product.seller_delay)).strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+
         return {'name': _('Stock Estimation Automatic OP: %s') % (product.name,),
             'origin': _('Stock Estimation Module'),
-            'date_planned': datetime.today().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+            'date_planned': date,
             'product_id': product.id,
             'product_qty': product_qty,
             'product_uom': product.uom_id.id,
             'location_id': warehouse.lot_input_id.id,
+            #'location_id': warehouse.lot_stock_id.id,
             'company_id': warehouse.company_id.id,
             'procure_method': 'make_to_order',}
 

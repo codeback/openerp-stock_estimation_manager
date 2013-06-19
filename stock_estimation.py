@@ -391,7 +391,7 @@ class stock_estimation_settings(osv.osv):
         if qos < 0.01:
             raise osv.except_osv(_('Invalid QoS!'), _('Your Quality of Service (QoS) must not be lower than 0.01'))
         
-        if qos > 0.95:            
+        if qos >= 0.95:            
             raise osv.except_osv(_('Invalid QoS!'), _('Your Quality of Service (QoS) must not be higher than 0.95'))
 
         return {'value': qos}
