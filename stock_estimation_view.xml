@@ -10,6 +10,7 @@
                     <field name="product_name" select="1"/> 
                     <field name="product_id" invisible="1"/>
                     <field name="required_qty" select="1"/>
+                    <field name="supplier_qty" select="1"/>
                     <field name="security_days" select="1"/>                
                     <field name="security_stock" select="1"/>                    
                     <field name="outgoings_per_day" select="1"/>
@@ -19,7 +20,8 @@
                     <field name="stock_virtual" select="1"/>               
                     <field name="stock_real" select="1"/>                      
                     <field name="supplier_name" select="1"/>
-                    <field name="supplier_delay" select="1"/>                                            
+                    <field name="supplier_delay" select="1"/>                    
+                    <field name="estimated_date" select="1"/>                                            
                 </tree>
             </field>
         </record>
