@@ -385,8 +385,7 @@ class stock_estimation_settings(osv.osv):
             raise osv.except_osv(_('Error removing objects!'), _('You cannot remove all records'))
         else:
             for id in ids:
-                pdb.set_trace()
-                if self.browse(cr, uid, id).selected ==True:
+                if self.browse(cr, uid, id).selected == True:
                     raise osv.except_osv(_('Error removing objects!'), _('You cannot remove a record with value "selected" = True'))
 
         return super(stock_estimation_settings, self).unlink(cr, uid, ids, context=context)
