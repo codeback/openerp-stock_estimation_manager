@@ -79,7 +79,7 @@
 
         <record id="view_run_stock_estimation" model="ir.ui.view">
             <field name="name">Run stock estimation</field>
-            <field name="model">stock.estimation.settings</field>
+            <field name="model">stock.estimator</field>
             <field name="priority" eval="15"/>
             <field name="arch" type="xml">
                 <form string="Run stock estimation manually" version="7.0">
