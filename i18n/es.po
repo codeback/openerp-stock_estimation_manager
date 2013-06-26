@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 7.0-20130325-002404\n"
+"Project-Id-Version: OpenERP Server 7.0-20130618-231044\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-05 11:32+0000\n"
-"PO-Revision-Date: 2013-06-05 11:32+0000\n"
+"POT-Creation-Date: 2013-06-26 11:03+0000\n"
+"PO-Revision-Date: 2013-06-26 11:03+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -76,14 +76,14 @@ msgid "Stock Estimation"
 msgstr "Estimación de Stock"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/wizard/wizard_order.py:97
+#: code:addons/stock_estimation/wizard/wizard_order.py:99
 #, python-format
 msgid "Stock Estimation Automatic OP: %s"
 msgstr "OP automática de estimación de Stock: %s"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/stock_estimation.py:378
-#: code:addons/stock_estimation/stock_estimation.py:383
+#: code:addons/stock_estimation/stock_estimation.py:385
+#: code:addons/stock_estimation/stock_estimation.py:390
 #, python-format
 msgid "Error removing objects!"
 msgstr "Error eliminando objetos!"
@@ -102,7 +102,7 @@ msgstr "Incluir BoM"
 #. module: stock_estimation
 #: field:stock.estimation,security_days:0
 msgid "Security Days"
-msgstr "Días de seguridad"
+msgstr "Días de stock"
 
 #. module: stock_estimation
 #: view:stock.estimation:0
@@ -147,7 +147,7 @@ msgid "stock.estimation.order.line"
 msgstr "stock.estimation.order.line"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/stock_estimation.py:401
+#: code:addons/stock_estimation/stock_estimation.py:408
 #, python-format
 msgid "You cannot deselect all configurations. Please, select another configuration first."
 msgstr "No es posible deseleccionar todas las configuraciones. Por favor, selecciona ora configuración primero."
@@ -166,9 +166,9 @@ msgid "_Cancel"
 msgstr "_Cancelar"
 
 #. module: stock_estimation
-#: model:ir.model,name:stock_estimation.model_stock_estimation_mode_wizard
-msgid "stock.estimation.mode.wizard"
-msgstr "stock.estimation.mode.wizard"
+#: field:stock.estimation,supplier_qty:0
+msgid "Supplier min. quantity"
+msgstr "Pedido mínimo"
 
 #. module: stock_estimation
 #: view:stock.estimation.order.wizard:0
@@ -192,7 +192,7 @@ msgid "Stock estimation settings"
 msgstr "Stock estimation settings"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/stock_estimation.py:378
+#: code:addons/stock_estimation/stock_estimation.py:385
 #, python-format
 msgid "You cannot remove all records"
 msgstr "No se pueden eliminar todos los registros"
@@ -208,7 +208,7 @@ msgid "Stock estimation manager"
 msgstr "Gestión de stock"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/stock_estimation.py:389
+#: code:addons/stock_estimation/stock_estimation.py:396
 #, python-format
 msgid "Your Quality of Service (QoS) must not be lower than 0.01"
 msgstr "La calidad de servicio (QoS) no puede ser menor que 0.01"
@@ -235,7 +235,7 @@ msgid "Expected per day"
 msgstr "Esperado por día"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/stock_estimation.py:401
+#: code:addons/stock_estimation/stock_estimation.py:408
 #, python-format
 msgid "Invalid Selected!"
 msgstr "Selección inválida!"
@@ -263,8 +263,8 @@ msgid "Products"
 msgstr "Productos"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/stock_estimation.py:389
-#: code:addons/stock_estimation/stock_estimation.py:392
+#: code:addons/stock_estimation/stock_estimation.py:396
+#: code:addons/stock_estimation/stock_estimation.py:399
 #, python-format
 msgid "Invalid QoS!"
 msgstr "QoS Inválido!"
@@ -278,7 +278,7 @@ msgstr "Ejecutar manualmente estimación de Stock"
 #. module: stock_estimation
 #: field:stock.estimation.order.line,wizard_id:0
 msgid "Wizard"
-msgstr "Asistente"
+msgstr "Wizard"
 
 #. module: stock_estimation
 #: view:stock.estimation.order.line:0
@@ -307,6 +307,11 @@ msgid "Sigma Factor"
 msgstr "Factor Sigma"
 
 #. module: stock_estimation
+#: model:ir.model,name:stock_estimation.model_stock_estimation_mode_wizard
+msgid "stock.estimation.mode.wizard"
+msgstr "stock.estimation.mode.wizard"
+
+#. module: stock_estimation
 #: field:stock.estimation,stock_real:0
 msgid "Real stock"
 msgstr "Stock real"
@@ -327,10 +332,15 @@ msgid "Danger"
 msgstr "Peligro"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/wizard/wizard_order.py:98
+#: code:addons/stock_estimation/wizard/wizard_order.py:100
 #, python-format
 msgid "Stock Estimation Module"
 msgstr "Módulo de Estimación de Stock"
+
+#. module: stock_estimation
+#: field:stock.estimation,estimated_date:0
+msgid "Estimated date"
+msgstr "Fecha estimada"
 
 #. module: stock_estimation
 #: field:stock.estimation,required_qty:0
@@ -349,7 +359,7 @@ msgid "General Information"
 msgstr "Información general"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/stock_estimation.py:392
+#: code:addons/stock_estimation/stock_estimation.py:399
 #, python-format
 msgid "Your Quality of Service (QoS) must not be higher than 0.95"
 msgstr "La calidad de servicio (QoS) no puede ser mayor que 0.95"
@@ -382,7 +392,7 @@ msgid "Estimation Parameters"
 msgstr "Parámetros para la estimación"
 
 #. module: stock_estimation
-#: code:addons/stock_estimation/stock_estimation.py:383
+#: code:addons/stock_estimation/stock_estimation.py:390
 #, python-format
 msgid "You cannot remove a record with value \"selected\" = True"
 msgstr "No puedes eliminar un registro con el valor \"seleccionado\" = True"
