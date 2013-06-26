@@ -133,9 +133,10 @@ If you press 'Run' button, the Stock Estimation module will estimate the stock o
         <record id="action_stock_estimation_run" model="ir.actions.act_window">
             <field name="name">Run stock estimation manually</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">stock.estimation.settings</field>
+            <field name="res_model">stock.estimator</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
+            <field name="target">new</field>
             <field name="view_id" ref="view_run_stock_estimation"/>
         </record>
 

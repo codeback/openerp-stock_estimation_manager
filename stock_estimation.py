@@ -413,6 +413,12 @@ class stock_estimation_settings(osv.osv):
 
         return {'value': selected}
 
+stock_estimation_settings()
+
+class stock_estimator(osv.osv_memory):
+    _name = "stock.estimator"
+    _columns = {}
+
     def run_stock_estimation(self, cr, uid, ids, context=None):
         """ Estimate stock from wizard"""    
 
@@ -430,4 +436,4 @@ class stock_estimation_settings(osv.osv):
             'params': {'menu_id': menu_ids[0]},
         }      
 
-stock_estimation_settings()
+stock_estimator()
